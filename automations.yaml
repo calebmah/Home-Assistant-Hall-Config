@@ -1,0 +1,92 @@
+- id: '1555352521638'
+  alias: Turn off iPad charger
+  trigger:
+  - above: '99'
+    entity_id: sensor.battery_ipad
+    for: 00:10:00
+    platform: numeric_state
+  condition: []
+  action:
+  - alias: ''
+    data:
+      entity_id: switch.03200085b4e62d0752e3
+    service: switch.turn_off
+- id: '1555352727652'
+  alias: Turn on iPad charger
+  trigger:
+  - below: '90'
+    entity_id: sensor.battery_ipad
+    platform: numeric_state
+  - at: '10:00:00'
+    platform: time
+  condition:
+  - below: '100'
+    condition: numeric_state
+    entity_id: sensor.battery_iphone
+  action:
+  - data:
+      entity_id: switch.03200085b4e62d0752e3
+    service: switch.turn_on
+- id: '1555354842262'
+  alias: Turn off iPhone charger
+  trigger:
+  - above: '99'
+    entity_id: sensor.battery_iphone
+    for: 00:10:00
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      entity_id: switch.0220011768c63aa1bb67
+    service: switch.turn_off
+- id: '1555354952806'
+  alias: Turn on iPhone charger
+  trigger:
+  - below: '90'
+    entity_id: sensor.battery_iphone
+    platform: numeric_state
+  - at: '10:00:00'
+    platform: time
+  condition:
+  - below: '100'
+    condition: numeric_state
+    entity_id: sensor.battery_iphone
+  action:
+  - data:
+      entity_id: switch.0220011768c63aa1bb67
+    service: switch.turn_on
+- id: '1555401936910'
+  alias: HA Start Notification
+  trigger:
+  - event: start
+    platform: homeassistant
+  condition: []
+  action:
+  - data:
+      message: Home Assistant started
+    service: notify.telegram
+- id: '1555402319036'
+  alias: HA Restart by telegram
+  trigger:
+  - event_data:
+      command: /restart
+    event_type: telegram_command
+    platform: event
+  condition: []
+  action:
+  - data:
+      message: Restarting Home Assistant...
+    service: notify.telegram
+  - data: {}
+    service: homeassistant.restart
+- id: '1555421879965'
+  alias: HA Update Notification
+  trigger:
+  - entity_id: updater.updater
+    platform: state
+  condition: []
+  action:
+  - data:
+      message: 'Update {{ states(''updater.updater'') }} for Home Assistant is available.
+        Release notes: {{ state_attr(''updater.updater'', ''release_notes'') }}.'
+    service: notify.telegram
