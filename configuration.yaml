@@ -16,9 +16,6 @@ homeassistant:
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
-# Show the introduction message on startup.
-introduction:
-
 # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
 # http:
 #   base_url: example.duckdns.org:8123
@@ -28,6 +25,10 @@ discovery:
 
 # Updater component
 updater:
+
+http:
+
+api:
 
 # Text to speech
 tts:
@@ -53,7 +54,7 @@ sonoff:
   password: !secret sonoff_password
   scan_interval: 60
   grace_period: 300
-  api_region: eu
+  api_region: as
   entity_prefix: True 
 
 device_tracker:
@@ -104,6 +105,23 @@ notify:
 
 ifttt:
   key: !secret ifttt_api_key
+
+zone:
+  - name: School
+    latitude: 1.347824
+    longitude: 103.681983
+    radius: 700
+    icon: mdi:school
+  - name: Hall
+    latitude: 1.354011
+    longitude: 103.688020
+    radius: 80
+    icon: mdi:home-variant
+  - name: Home
+    latitude: 1.367841
+    longitude: 103.953564
+    radius: 60
+    icon: mdi:home
 
 group: !include groups.yaml
 automation: !include automations.yaml

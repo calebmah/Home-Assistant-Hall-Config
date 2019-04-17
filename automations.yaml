@@ -1,4 +1,4 @@
-- id: '1555352521638'
+- id: '1555475043207'
   alias: Turn off iPad charger
   trigger:
   - above: '99'
@@ -7,10 +7,9 @@
     platform: numeric_state
   condition: []
   action:
-  - alias: ''
-    data:
+  - data:
       entity_id: switch.03200085b4e62d0752e3
-    service: switch.turn_off
+    service: script.turn_off
 - id: '1555352727652'
   alias: Turn on iPad charger
   trigger:
@@ -90,3 +89,61 @@
       message: 'Update {{ states(''updater.updater'') }} for Home Assistant is available.
         Release notes: {{ state_attr(''updater.updater'', ''release_notes'') }}.'
     service: notify.telegram
+- id: '1555437746695'
+  alias: Telegram say command
+  trigger:
+  - event_data:
+      command: /say
+    event_type: telegram_command
+    platform: event
+  condition: []
+  action:
+  - data_template:
+      message: '{% for state in trigger.event.data[''args''] %} {{ state }} {% endfor
+        %}'
+    service: notify.telegram
+- id: '1555442211411'
+  alias: Device offline notification
+  trigger:
+  - entity_id: switch.sonoff_1000265b72
+    platform: state
+    to: unavailable
+  condition: []
+  action:
+  - data:
+      message: The laptop plug is offline
+    service: notify.telegram
+- id: '1555481982497'
+  alias: Turn off laptop charger
+  trigger:
+  - above: '99'
+    entity_id: sensor.laptop_battery
+    for: 00:10:00
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      entity_id: switch.sonoff_1000265b72
+    service: switch.turn_off
+- id: '1555482115765'
+  alias: Turn on laptop charger
+  trigger:
+  - below: '60'
+    entity_id: sensor.laptop_battery
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      entity_id: switch.sonoff_1000265b72
+    service: switch.turn_off
+- id: '1555482181320'
+  alias: Laptop battery notification
+  trigger:
+  - below: '25'
+    entity_id: sensor.laptop_battery
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: Your laptop battery is low, please plug it in
+    service: tts.google_say
