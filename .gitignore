@@ -5,6 +5,13 @@
 !*.yaml
 !.gitignore
 !*.md
+!*.mp3
+!*.py
+!custom_components
+!sonoff
+!device_tracker
+!tts
+
 
 # Ignore folders.
 .storage

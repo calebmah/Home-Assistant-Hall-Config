@@ -58,10 +58,10 @@ sonoff:
   entity_prefix: True 
 
 device_tracker:
-  - platform: icloud
+  - platform: icloud2
     username: !secret icloud_username
     password: !secret icloud_password
-    gps_accuracy_threshold: 100
+    filter_devices: 'caleb'
 
 # Sensors
 sensor:
@@ -102,9 +102,6 @@ notify:
   - name: telegram
     platform: telegram
     chat_id: !secret chat_id_caleb
-
-ifttt:
-  key: !secret ifttt_api_key
 
 zone:
   - name: School

@@ -1,15 +1,3 @@
-- id: '1555475043207'
-  alias: Turn off iPad charger
-  trigger:
-  - above: '99'
-    entity_id: sensor.battery_ipad
-    for: 00:10:00
-    platform: numeric_state
-  condition: []
-  action:
-  - data:
-      entity_id: switch.03200085b4e62d0752e3
-    service: script.turn_off
 - id: '1555352727652'
   alias: Turn on iPad charger
   trigger:
@@ -125,17 +113,6 @@
   - data:
       entity_id: switch.sonoff_1000265b72
     service: switch.turn_off
-- id: '1555482115765'
-  alias: Turn on laptop charger
-  trigger:
-  - below: '60'
-    entity_id: sensor.laptop_battery
-    platform: numeric_state
-  condition: []
-  action:
-  - data:
-      entity_id: switch.sonoff_1000265b72
-    service: switch.turn_off
 - id: '1555482181320'
   alias: Laptop battery notification
   trigger:
@@ -147,3 +124,29 @@
   - data:
       message: Your laptop battery is low, please plug it in
     service: tts.google_say
+- id: '1555877375847'
+  alias: Turn off iPad charger
+  trigger:
+  - above: '99'
+    entity_id: sensor.battery_ipad
+    for: 00:10:00
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      entity_id: switch.03200085b4e62d0752e3
+    service: switch.turn_off
+- id: '1555990539226'
+  alias: Turn on laptop charger
+  trigger:
+  - below: '60'
+    entity_id: sensor.laptop_battery
+    platform: numeric_state
+  - below: '50'
+    entity_id: sensor.laptop_battery
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      entity_id: switch.sonoff_1000265b72
+    service: switch.turn_on
