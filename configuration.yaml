@@ -1,9 +1,9 @@
 homeassistant:
   # Name of the location where Home Assistant is running
-  name: Hall
+  name: Home
   # Location required to calculate the time the sun rises and sets
-  latitude: 1.354011
-  longitude: 103.688020
+  latitude: 1.367841
+  longitude: 103.953564
   # Impacts weather/sunrise data (altitude above sea level in meters)
   elevation: 0
   # metric for Metric, imperial for Imperial
@@ -27,21 +27,38 @@ discovery:
 updater:
 
 http:
+  ssl_certificate: /home/homeassistant/dehydrated/certs/mahhome.duckdns.org/fullchain.pem
+  ssl_key: /home/homeassistant/dehydrated/certs/mahhome.duckdns.org/privkey.pem
+  base_url: mahhome.duckdns.org:8123
 
 api:
 
 # Text to speech
 tts:
-  - platform: google
+  - platform: google_translate
 
 # recorder for history
 recorder:
+  include:
+    entities:
+      - sensor.battery_iphone
+      - sensor.battery_ipad
+      - sensor.laptop_battery
+      - sensor.caleb_sipad_battery_status
+      - sensor.caleb_sipad_badge
+      - sensor.caleb_siphone_battery_status
+      - sensor.caleb_siphone_badge
+      - sensor.yr_symbol
+      - sensor.time_to_home
+      - sensor.time_to_school
+      - sensor.time_to_work
   exclude:
     domains:
       - automation
       - weblink
       - group
       - persistent_notification
+      - sensor
 
 tuya:
   username: !secret tuya_username
@@ -49,19 +66,20 @@ tuya:
   country_code: 65
   platform: smart_life
 
-sonoff:
-  username: !secret sonoff_username
-  password: !secret sonoff_password
-  scan_interval: 60
-  grace_period: 300
-  api_region: as
-  entity_prefix: True 
-
 device_tracker:
-  - platform: icloud2
-    username: !secret icloud_username
+  - platform: icloud3
+    username: !secret icloud_username 
     password: !secret icloud_password
-    filter_devices: 'caleb'
+    account_name: caleb_icloud
+    include_device_types:
+      - iphone
+      - ipad
+    exclude_device:
+      - yeowbengsiphone
+    unit_of_measurement: km
+    distance_method: calc
+    sensor_badge_picture:
+    - caleb_siphone @ /local/Caleb.jpg
 
 # Sensors
 sensor:
@@ -91,6 +109,33 @@ sensor:
                 {{ states.sensor.battery_ipad.state }}
             {%- endif %}
         device_class: battery
+  - platform: google_travel_time
+    api_key: AIzaSyDVlBLIkgN8Kit4SnuR0wjwyEJkG2Bw8fs
+    name: 'Time to home'
+    origin: device_tracker.caleb_siphone
+    destination: zone.home
+    scan_interval: 900
+    options:
+      mode: 'transit'
+      transit_mode: 'subway'
+  - platform: google_travel_time
+    api_key: AIzaSyDVlBLIkgN8Kit4SnuR0wjwyEJkG2Bw8fs
+    name: 'Time to school'
+    origin: device_tracker.caleb_siphone
+    destination: zone.hall
+    scan_interval: 900
+    options:
+      mode: 'transit'
+      transit_mode: 'subway'
+  - platform: google_travel_time
+    api_key: AIzaSyDVlBLIkgN8Kit4SnuR0wjwyEJkG2Bw8fs
+    name: 'Time to work'
+    origin: device_tracker.caleb_siphone
+    destination: zone.work
+    scan_interval: 900
+    options:
+      mode: 'transit'
+      transit_mode: 'subway'
 
 telegram_bot:
   - platform: polling
@@ -107,7 +152,7 @@ zone:
   - name: School
     latitude: 1.347824
     longitude: 103.681983
-    radius: 700
+    radius: 750
     icon: mdi:school
   - name: Hall
     latitude: 1.354011
@@ -119,6 +164,24 @@ zone:
     longitude: 103.953564
     radius: 60
     icon: mdi:home
+  - name: White Sands
+    latitude: 1.373047
+    longitude: 103.949800
+    radius: 150
+    icon: mdi:shopping
+  - name: Changi Methodist Church
+    latitude: 1.391671
+    longitude: 103.913571
+    radius: 80
+    icon: mdi:church
+  - name: Work
+    latitude: 1.299551
+    longitude: 103.787740
+    radius: 150
+    icon: mdi:briefcase
+
+
+
 
 group: !include groups.yaml
 automation: !include automations.yaml
