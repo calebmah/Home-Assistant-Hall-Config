@@ -33,6 +33,8 @@ http:
 
 api:
 
+ios:
+
 # Text to speech
 tts:
   - platform: google_translate
@@ -136,6 +138,18 @@ sensor:
     options:
       mode: 'transit'
       transit_mode: 'subway'
+
+switch:
+  - platform: broadlink
+    host: 192.168.1.203
+    mac: '78:0F:77:5A:6E:9A'
+    friendly_name: 'Broadlink'
+    switches:
+      ceiling_fan:
+        friendly_name: "Ceiling Fan"
+        command_on: 'shYyAAQSDwgPBw8IBBIEEgQSBBIEEg8HBBIFEgUSDwgEEg8IBBIPCA8IBKcPCAQSBBIPBwQSAAAAAAAA'
+        command_off: 'sg0yABAHBRIFEhAHBRIFEhAHEAcQBwYRBRIFEgUSBRIQBwYSBRIFEhAHBRIFEQUSEAcQBwWnAAAAAAAA'
+
 
 telegram_bot:
   - platform: polling
