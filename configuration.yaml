@@ -55,6 +55,87 @@ recorder:
       - sensor.time_to_school
       - sensor.time_to_work
   exclude:
+    entities:
+      - sensor.caleb_sipad_altitude
+      - sensor.caleb_sipad_battery
+      - sensor.caleb_sipad_calc_distance
+      - sensor.caleb_sipad_dir_of_travel
+      - sensor.caleb_sipad_distance
+      - sensor.caleb_sipad_gps_accuracy
+      - sensor.caleb_sipad_info
+      - sensor.caleb_sipad_interval
+      - sensor.caleb_sipad_last_located
+      - sensor.caleb_sipad_last_update
+      - sensor.caleb_sipad_last_zone
+      - sensor.caleb_sipad_last_zone_name1
+      - sensor.caleb_sipad_last_zone_name2
+      - sensor.caleb_sipad_last_zone_name3
+      - sensor.caleb_sipad_next_update
+      - sensor.caleb_sipad_poll_count
+      - sensor.caleb_sipad_speed
+      - sensor.caleb_sipad_travel_distance
+      - sensor.caleb_sipad_travel_time
+      - sensor.caleb_sipad_trigger
+      - sensor.caleb_sipad_waze_distance
+      - sensor.caleb_sipad_zone
+      - sensor.caleb_sipad_zone_name1
+      - sensor.caleb_sipad_zone_name2
+      - sensor.caleb_sipad_zone_name3
+      - sensor.caleb_sipad_zone_timestamp
+      - sensor.caleb_s_iphone_battery_level
+      - sensor.caleb_s_iphone_battery_state
+      - sensor.caleb_siphone_altitude
+      - sensor.caleb_siphone_battery
+      - sensor.caleb_siphone_calc_distance
+      - sensor.caleb_siphone_dir_of_travel
+      - sensor.caleb_siphone_distance
+      - sensor.caleb_siphone_gps_accuracy
+      - sensor.caleb_siphone_info
+      - sensor.caleb_siphone_interval
+      - sensor.caleb_siphone_last_located
+      - sensor.caleb_siphone_last_update
+      - sensor.caleb_siphone_last_zone
+      - sensor.caleb_siphone_last_zone_name1
+      - sensor.caleb_siphone_last_zone_name2
+      - sensor.caleb_siphone_last_zone_name3
+      - sensor.caleb_siphone_next_update
+      - sensor.caleb_siphone_poll_count
+      - sensor.caleb_siphone_speed
+      - sensor.caleb_siphone_travel_distance
+      - sensor.caleb_siphone_travel_time
+      - sensor.caleb_siphone_trigger
+      - sensor.caleb_siphone_waze_distance
+      - sensor.caleb_siphone_zone
+      - sensor.caleb_siphone_zone_name1
+      - sensor.caleb_siphone_zone_name2
+      - sensor.caleb_siphone_zone_name3
+      - sensor.caleb_siphone_zone_timestamp
+      - sensor.yeowbengsiphone_altitude
+      - sensor.yeowbengsiphone_battery
+      - sensor.yeowbengsiphone_calc_distance
+      - sensor.yeowbengsiphone_dir_of_travel
+      - sensor.yeowbengsiphone_distance
+      - sensor.yeowbengsiphone_gps_accuracy
+      - sensor.yeowbengsiphone_info
+      - sensor.yeowbengsiphone_interval
+      - sensor.yeowbengsiphone_last_located
+      - sensor.yeowbengsiphone_last_update
+      - sensor.yeowbengsiphone_last_zone
+      - sensor.yeowbengsiphone_last_zone_name1
+      - sensor.yeowbengsiphone_last_zone_name2
+      - sensor.yeowbengsiphone_last_zone_name3
+      - sensor.yeowbengsiphone_next_update
+      - sensor.yeowbengsiphone_poll_count
+      - sensor.yeowbengsiphone_speed
+      - sensor.yeowbengsiphone_travel_distance
+      - sensor.yeowbengsiphone_travel_time
+      - sensor.yeowbengsiphone_trigger
+      - sensor.yeowbengsiphone_waze_distance
+      - sensor.yeowbengsiphone_zone
+      - sensor.yeowbengsiphone_zone_name1
+      - sensor.yeowbengsiphone_zone_name2
+      - sensor.yeowbengsiphone_zone_name3
+      - sensor.yeowbengsiphone_zone_timestamp
     domains:
       - automation
       - weblink
@@ -76,12 +157,12 @@ device_tracker:
     include_device_types:
       - iphone
       - ipad
-    exclude_device:
-      - yeowbengsiphone
+    inzone_interval: 60
     unit_of_measurement: km
     distance_method: calc
     sensor_badge_picture:
     - caleb_siphone @ /local/Caleb.jpg
+    - yeowbengsiphone @ /local/dad.jpg
 
 # Sensors
 sensor:
@@ -112,7 +193,7 @@ sensor:
             {%- endif %}
         device_class: battery
   - platform: google_travel_time
-    api_key: AIzaSyDVlBLIkgN8Kit4SnuR0wjwyEJkG2Bw8fs
+    api_key: !secret google_distance_api_key
     name: 'Time to home'
     origin: device_tracker.caleb_siphone
     destination: zone.home
@@ -121,7 +202,7 @@ sensor:
       mode: 'transit'
       transit_mode: 'subway'
   - platform: google_travel_time
-    api_key: AIzaSyDVlBLIkgN8Kit4SnuR0wjwyEJkG2Bw8fs
+    api_key: !secret google_distance_api_key
     name: 'Time to school'
     origin: device_tracker.caleb_siphone
     destination: zone.hall
@@ -130,7 +211,7 @@ sensor:
       mode: 'transit'
       transit_mode: 'subway'
   - platform: google_travel_time
-    api_key: AIzaSyDVlBLIkgN8Kit4SnuR0wjwyEJkG2Bw8fs
+    api_key: !secret google_distance_api_key
     name: 'Time to work'
     origin: device_tracker.caleb_siphone
     destination: zone.work
@@ -149,6 +230,10 @@ switch:
         friendly_name: "Ceiling Fan"
         command_on: 'shYyAAQSDwgPBw8IBBIEEgQSBBIEEg8HBBIFEgUSDwgEEg8IBBIPCA8IBKcPCAQSBBIPBwQSAAAAAAAA'
         command_off: 'sg0yABAHBRIFEhAHBRIFEhAHEAcQBwYRBRIFEgUSBRIQBwYSBRIFEhAHBRIFEQUSEAcQBwWnAAAAAAAA'
+      standing_fan:
+        friendly_name: "Standing Fan"
+        command_on: 'JgBoAAABM5gWOhUTFhIWEhUTFhITFRYSFRMWORU7FjkVOhY6EzwWOhM8FjoVExYSExUWEhUTFhIWEhUTFjoVOhY5FjkWOhY5FToWOhUTFhIWExUSFhIUFBYSFBQWOhM8FjoUOxY6FToVAA0F'
+        command_off: 'JgBoAAABM5gWOhUTFhIWEhUTFhITFRYSFRMWORU7FjkVOhY6EzwWOhM8FjoVExYSExUWEhUTFhIWEhUTFjoVOhY5FjkWOhY5FToWOhUTFhIWExUSFhIUFBYSFBQWOhM8FjoUOxY6FToVAA0F'
 
 
 telegram_bot:
@@ -181,7 +266,7 @@ zone:
   - name: White Sands
     latitude: 1.373047
     longitude: 103.949800
-    radius: 150
+    radius: 110
     icon: mdi:shopping
   - name: Changi Methodist Church
     latitude: 1.391671
