@@ -4,8 +4,6 @@ light.02200095dc4f2212f5c3:
   hidden: true
 binary_sensor.remote_ui:
   hidden: true
-zone.home:
-  radius: 80
 device_tracker.caleb_siphone:
   friendly_name: Caleb iPhone
 device_tracker.caleb_sipad:

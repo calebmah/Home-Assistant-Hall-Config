@@ -150,3 +150,28 @@
   - data:
       entity_id: switch.sonoff_1000265b72
     service: switch.turn_on
+- id: '1557849166547'
+  alias: Notify Eng
+  trigger:
+  - entity_id: person.caleb
+    event: enter
+    platform: zone
+    zone: zone.erkus
+  condition:
+  - after: 07:00:00
+    before: '10:00:00'
+    condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+  - data:
+      message: Hi Eng, I am downstairs.
+      target: '+17077977660'
+    service: notify.twilio_eng
+  - data_template:
+      message: 'It will take {{ state_attr(''sensor.time_to_work_by_car'', ''duration'') }} to drive to work.'
+    service: notify.telegram

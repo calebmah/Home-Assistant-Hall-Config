@@ -219,6 +219,14 @@ sensor:
     options:
       mode: 'transit'
       transit_mode: 'subway'
+  - platform: google_travel_time
+    api_key: !secret google_distance_api_key
+    name: 'Time to work by car'
+    origin: device_tracker.caleb_siphone
+    destination: zone.work
+    scan_interval: 900
+    options:
+      mode: 'driving'
 
 switch:
   - platform: broadlink
@@ -235,6 +243,9 @@ switch:
         command_on: 'JgBoAAABM5gWOhUTFhIWEhUTFhITFRYSFRMWORU7FjkVOhY6EzwWOhM8FjoVExYSExUWEhUTFhIWEhUTFjoVOhY5FjkWOhY5FToWOhUTFhIWExUSFhIUFBYSFBQWOhM8FjoUOxY6FToVAA0F'
         command_off: 'JgBoAAABM5gWOhUTFhIWEhUTFhITFRYSFRMWORU7FjkVOhY6EzwWOhM8FjoVExYSExUWEhUTFhIWEhUTFjoVOhY5FjkWOhY5FToWOhUTFhIWExUSFhIUFBYSFBQWOhM8FjoUOxY6FToVAA0F'
 
+twilio:
+  account_sid: !secret twilio_account_sid
+  auth_token: !secret twilio_auth_token
 
 telegram_bot:
   - platform: polling
@@ -246,6 +257,9 @@ notify:
   - name: telegram
     platform: telegram
     chat_id: !secret chat_id_caleb
+  - name: twilio_eng
+    platform: twilio_sms
+    from_number: !secret phone_number
 
 zone:
   - name: School
@@ -261,7 +275,7 @@ zone:
   - name: Home
     latitude: 1.367841
     longitude: 103.953564
-    radius: 60
+    radius: 80
     icon: mdi:home
   - name: White Sands
     latitude: 1.373047
@@ -278,7 +292,11 @@ zone:
     longitude: 103.787740
     radius: 150
     icon: mdi:briefcase
-
+  - name: Erkus
+    latitude: 1.375313
+    longitude: 103.946873
+    radius: 80
+    icon: mdi:home
 
 
 
