@@ -287,6 +287,11 @@ zone:
     longitude: 103.913571
     radius: 80
     icon: mdi:church
+  - name: Bartley Christian Church
+    latitude: 1.343936
+    longitude: 103.878571
+    radius: 80
+    icon: mdi:home
   - name: Work
     latitude: 1.299551
     longitude: 103.787740
@@ -298,7 +303,10 @@ zone:
     radius: 80
     icon: mdi:home
 
-
+input_boolean:
+  fetch_eng:
+    name: Fetch Eng
+    icon: mdi:car
 
 group: !include groups.yaml
 automation: !include automations.yaml

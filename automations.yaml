@@ -151,7 +151,7 @@
       entity_id: switch.sonoff_1000265b72
     service: switch.turn_on
 - id: '1557849166547'
-  alias: Notify Eng
+  alias: Notify Eng Morning
   trigger:
   - entity_id: person.caleb
     event: enter
@@ -173,5 +173,37 @@
       target: '+17077977660'
     service: notify.twilio_eng
   - data_template:
-      message: 'It will take {{ state_attr(''sensor.time_to_work_by_car'', ''duration'') }} to drive to work.'
+      message: It will take {{ state_attr('sensor.time_to_work_by_car', 'duration')
+        }} to drive to work.
     service: notify.telegram
+  - data:
+      entity_id: input_boolean.fetch_eng
+    service: input_boolean.turn_on
+- id: '1557935175383'
+  alias: Notify Eng Evening
+  trigger:
+  - entity_id: person.caleb
+    event: leave
+    platform: zone
+    zone: zone.work
+  condition:
+  - after: '17:00:00'
+    before: '20:00:00'
+    condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - condition: state
+    entity_id: input_boolean.fetch_eng
+    state: 'on'
+  action:
+  - data:
+      message: Hi Eng, I have left work. Ready to go any time!
+      target: '+6596197998'
+    service: notify.twilio_eng
+  - data:
+      entity_id: input_boolean.fetch_eng
+    service: input_boolean.turn_off
